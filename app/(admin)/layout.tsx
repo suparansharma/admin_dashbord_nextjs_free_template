@@ -1,7 +1,7 @@
 "use client";
-import "./globals.css";
-import "./data-tables-css.css";
-import "./satoshi.css";
+import "../globals.css";
+import "../data-tables-css.css";
+import "../satoshi.css";
 import { useState, useEffect } from "react";
 import Loader from "@/components/common/Loader";
 
@@ -9,7 +9,7 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import Axios from "@/utils/axios";
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -25,14 +25,26 @@ export default function RootLayout({
   console.log('token', token)
 
   return (
-    <html lang="en">
+      <html lang="en">
       <body suppressHydrationWarning={true}>
-        <div className="dark:bg-boxdark-2 dark:text-bodydark">
-          {loading ? (<Loader />) : (
+      <div className="dark:bg-boxdark-2 dark:text-bodydark">
+        {loading ? (<Loader />) : (
             <div className="flex h-screen overflow-hidden">
+              {/* <!-- ===== Sidebar Start ===== --> */}
+              <Sidebar
+                  sidebarOpen={sidebarOpen}
+                  setSidebarOpen={setSidebarOpen}
+              />
+              {/* <!-- ===== Sidebar End ===== --> */}
 
               {/* <!-- ===== Content Area Start ===== --> */}
               <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+                {/* <!-- ===== Header Start ===== --> */}
+                <Header
+                    sidebarOpen={sidebarOpen}
+                    setSidebarOpen={setSidebarOpen}
+                />
+                {/* <!-- ===== Header End ===== --> */}
 
                 {/* <!-- ===== Main Content Start ===== --> */}
                 <main>
@@ -44,9 +56,9 @@ export default function RootLayout({
               </div>
               {/* <!-- ===== Content Area End ===== --> */}
             </div>
-          )}
-        </div>
+        )}
+      </div>
       </body>
-    </html>
+      </html>
   );
 }
