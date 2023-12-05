@@ -1,71 +1,67 @@
-  // "use client"
+// "use client"
 
-  import axios from 'axios';
-import { useRouter } from 'next/navigation';
-  import { useState } from 'react';
+import axios from 'axios';
+import {useRouter} from 'next/navigation';
+import {useState} from 'react';
 
-export default function Axios() { 
-  const router = useRouter();
-
-      //get token string
-      function getToken(){
-
-        if (typeof window !== 'undefined') {
-          const tokenString = localStorage.getItem('access_token');
-          const userToken = JSON.parse(tokenString);
-          return userToken;
-        }
-
-
-    }
-    //get user string
-    function getUser(){
-      if (typeof window !== 'undefined') {
-
-        const userString = localStorage.getItem('user');
-        const user_detail = JSON.parse(userString);
-        return user_detail;
-      }
-    }
+export default function Axios() {
+    const router = useRouter();
 
   const [user,setUser] = useState(getUser());
   const [token,setToken] = useState(getToken());
 
-  function saveToken(user,token){
-    if (typeof window !== 'undefined') {
-      // Perform localStorage action
-      const storeToken = localStorage.setItem('access_token',JSON.stringify(token));
-      const storeUser = localStorage.setItem('user',JSON.stringify(user));
 
-      setToken(storeToken);
-      setUser(storeUser);
+    //get token string
+    function getToken() {
+        if (typeof window !== 'undefined') {
+          return localStorage.getItem('access_token');
+        }
 
-      router.replace("/profile/user/", "/dashboard");
 
     }
-  }
 
-  function logout(){
-    localStorage.clear();
-     router.replace("/profile/user/", "/user/login");
-  }
+    //get user string
+    function getUser() {
+        if (typeof window !== 'undefined') {
+            const userString = localStorage.getItem('user');
+            return JSON.parse(userString);
+        }
+    }
+
+    function saveToken(user, token) {
+        if (typeof window !== 'undefined') {
+            // Perform localStorage action
+            localStorage.setItem('access_token', token);
+            localStorage.setItem('user', JSON.stringify(user));
+
+            setToken(token);
+            setUser(user);
+
+            router.replace("/dashboard", "/dashboard");
+        }
+    }
+
+    function logout() {
+        localStorage.clear();
+        router.replace("/profile/user/", "/user/login");
+    }
 
     const http = axios.create({
-        headers:{
-            "Content-Type":"application/json",
-            "Accept":"application/json",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "X-Requested-With": "XMLHttpRequest",
             "Authorization": `Bearer ${token}`,
         }
     });
-  http.defaults.withCredentials = true;
+    http.defaults.withCredentials = true;
 
-  return {
-    http,
-    saveToken,
-    logout,
-    token,
-    user,
-    getToken
-  };
+    return {
+        http,
+        saveToken,
+        logout,
+        token,
+        user,
+        getToken
+    };
 }

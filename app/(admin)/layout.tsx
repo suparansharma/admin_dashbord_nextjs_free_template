@@ -1,17 +1,16 @@
 "use client";
-import "./globals.css";
-import "./data-tables-css.css";
-import "./satoshi.css";
+import "../globals.css";
+import "../data-tables-css.css";
+import "../satoshi.css";
 import {useState, useEffect} from "react";
 import Loader from "@/components/common/Loader";
 
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import Axios from "@/utils/axios";
-import {router} from "next/client";
 import {useRouter} from "next/navigation";
 
-export default function RootLayout({children} : {children: React.ReactNode; }) {
+export default function AuthLayout({ children }: { children: React.ReactNode; }) {
 
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -19,10 +18,10 @@ export default function RootLayout({children} : {children: React.ReactNode; }) {
     const [loading, setLoading] = useState<boolean>(true);
     const {http, user, token, logout} = Axios();
     useEffect(() => {
-        console.log('first layout token', token)
-        if (token !== null && token !== undefined) {
-            // window.location.href = '/dashboard';
-            router.replace("/dashboard")
+        console.log('second layout token', token)
+        if (token === null || token === undefined) {
+            window.location.href = '/';
+            // router.push("/")
         }
         setTimeout(() => setLoading(false), 500);
     }, []);
@@ -34,9 +33,21 @@ export default function RootLayout({children} : {children: React.ReactNode; }) {
         <div className="dark:bg-boxdark-2 dark:text-bodydark">
             {loading ? (<Loader/>) : (
                 <div className="flex h-screen overflow-hidden">
+                    {/* <!-- ===== Sidebar Start ===== --> */}
+                    <Sidebar
+                        sidebarOpen={sidebarOpen}
+                        setSidebarOpen={setSidebarOpen}
+                    />
+                    {/* <!-- ===== Sidebar End ===== --> */}
 
                     {/* <!-- ===== Content Area Start ===== --> */}
                     <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+                        {/* <!-- ===== Header Start ===== --> */}
+                        <Header
+                            sidebarOpen={sidebarOpen}
+                            setSidebarOpen={setSidebarOpen}
+                        />
+                        {/* <!-- ===== Header End ===== --> */}
 
                         {/* <!-- ===== Main Content Start ===== --> */}
                         <main>
