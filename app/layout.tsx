@@ -5,26 +5,14 @@ import "./satoshi.css";
 import {useState, useEffect} from "react";
 import Loader from "@/components/common/Loader";
 
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
-import Axios from "@/utils/axios";
-import {router} from "next/client";
-import {useRouter} from "next/navigation";
 
 export default function RootLayout({children} : {children: React.ReactNode; }) {
 
-    const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const [loading, setLoading] = useState<boolean>(true);
-    const {http, user, token, logout} = Axios();
     useEffect(() => {
-        console.log('first layout token', token)
-        if (token !== null && token !== undefined) {
-            // window.location.href = '/dashboard';
-            router.replace("/dashboard")
-        }
-        setTimeout(() => setLoading(false), 500);
+        setTimeout(() => setLoading(false), 1000);
     }, []);
 
 

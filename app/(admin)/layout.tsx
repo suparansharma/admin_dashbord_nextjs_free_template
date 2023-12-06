@@ -19,10 +19,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode; })
     const {http, user, token, logout} = Axios();
     useEffect(() => {
         console.log('second layout token', token)
-        if (token === null || token === undefined) {
-            window.location.href = '/';
-            // router.push("/")
-        }
+        // if (token === null || token === undefined) {
+        //     window.location.href = '/';
+        //     // router.push("/")
+        // }
         setTimeout(() => setLoading(false), 500);
     }, []);
 
